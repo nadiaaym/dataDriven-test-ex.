@@ -1,29 +1,30 @@
 package Lesson12_dataDrivenTesting;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.Lesson12_dataDrivenTesting.dataprovider;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import static org.testng.Assert.*;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 
 
 public class ex01_DataDrivenTesting {
     public WebDriver driver;
-  @BeforeClass
-  public void WebDriver(){
-      WebDriverManager.chromedriver().setup();
-      driver = new ChromeDriver();
-      driver.get("https://www.wikipedia.org/");
-      driver.manage().window().maximize();
-  }
-    @Test(dataProvider = "data-provider")
-    public void x(String key, String value) {
+    @BeforeClass
+    public void WebDriver(){
+//      WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+        driver.get("https://www.wikipedia.org/");
+        driver.manage().window().maximize();
+    }
+
+    @Test(dataProvider = "data-provider", dataProviderClass = dataprovider.class)
+    public void wikiTest(String key, String value) {
         WebElement searchInput = driver.findElement(By.id("searchInput"));
         searchInput.sendKeys(key);
         driver.findElement(By.tagName("button")).click();
@@ -38,8 +39,6 @@ public class ex01_DataDrivenTesting {
         Assert.assertEquals(mainTitle,value);
 
         driver.get("http://wikipedia.org/");
-
-
     }
 
 
